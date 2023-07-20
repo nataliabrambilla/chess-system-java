@@ -26,6 +26,7 @@ public class Position {
 		this.column = column;
 	}
 
+	//IMPRIMIR A POSIÇÃO NA TELA
 	@Override
 	public String toString() {
 		return row + ", " + column;

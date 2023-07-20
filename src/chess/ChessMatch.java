@@ -6,18 +6,19 @@ import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
+//REGRAS DO JOGO DE XADREZ
 public class ChessMatch {
 
 	private Board board;
 
-	public ChessMatch() {
-		board = new Board(8, 8);
+	public ChessMatch() {              //Quando for criada a partida (ChessMatch), cria-se um tabuleiro 8x8 e inicia-se a partida.
+		board = new Board(8, 8);       //Dimensão do tabuleiro.
 		initialSetup();
 	}
 
-	public ChessPiece[][] getPieces() {
+	//MATRIZ DAS PEÇAS
+	public ChessPiece[][] getPieces() {                                                   //ChessPiece que vai ser manipulada, não Piece.
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
-
 		for (int i = 0; i < board.getRows(); i++) {
 			for (int j = 0; j < board.getColumns(); j++) {
 				mat[i][j] = (ChessPiece) board.piece(i, j);
@@ -50,10 +51,12 @@ public class ChessMatch {
 		}
 	}
 	
+	//COLOCAÇÃO DE UM PEÇA USANDO AS COORDENADAS DO XADREZ
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition());
 	}
 
+	//INICIALIZAÇÃO DA PARTIDA
 	private void initialSetup() {
 		placeNewPiece('c', 1, new Rook(board, Color.WHITE));
 		placeNewPiece('c', 2, new Rook(board, Color.WHITE));
