@@ -49,6 +49,9 @@ public class ChessMatch {
 		if (!board.thereIsAPiece(position)) {
 			throw new ChessException("There is no piece on source position");
 		}
+		if (!board.piece(position).isThereAnyPossibleMove()) {
+			throw new ChessException("There is possible moves for the choser piece");
+		}
 	}
 	
 	//COLOCAÇÃO DE UM PEÇA USANDO AS COORDENADAS DO XADREZ
