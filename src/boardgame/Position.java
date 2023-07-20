@@ -26,12 +26,16 @@ public class Position {
 		this.column = column;
 	}
 
+	//ATUALIZAR OS VALORES DE UMA POSIÇÃO
+	public void setValues(int row, int column) {
+		this.row = row;
+		this.column = column;
+	}
+	
 	//IMPRIMIR A POSIÇÃO NA TELA
 	@Override
 	public String toString() {
 		return row + ", " + column;
 	}
-	
-	
 
 }
