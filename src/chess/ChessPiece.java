@@ -17,6 +17,11 @@ public abstract class ChessPiece extends Piece{
 		return color;
 	}
 	
+	//CONVERTE PARA A POSIÇÃO DO XADREZ
+	public ChessPosition getChessPosition() {
+		return ChessPosition.fromPosition(position);
+	}
+	
 	//VERIFICAÇÃO DA PRESENÇA DE UMA PEÇA DO OPONENTE EM DETERMINADA POSIÇÃO
 	protected boolean isThereOpponentPiece(Position position) {
 		ChessPiece p = (ChessPiece)getBoard().piece(position);
