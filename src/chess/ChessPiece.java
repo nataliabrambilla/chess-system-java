@@ -13,7 +13,7 @@ public abstract class ChessPiece extends Piece{
 		this.color = color;
 	}
 
-	public Color getColor() {            //Apena o get, pois não desejamos que a cor de uma peça seja modificada (set).
+	public Color getColor() {            //Apenas o get, pois não desejamos que a cor de uma peça seja modificada (set).
 		return color;
 	}
 	
