@@ -6,7 +6,7 @@ import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.Color;
 
-//PECA - PEÃO
+//PEÇA - PEÃO
 public class Pawn extends ChessPiece {
 	
 	private ChessMatch chessMatch;

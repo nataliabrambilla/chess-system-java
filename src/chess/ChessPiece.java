@@ -4,6 +4,7 @@ import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
 
+//PEÇAS DO JOGO
 public abstract class ChessPiece extends Piece{
 	
 	private Color color;
@@ -14,7 +15,7 @@ public abstract class ChessPiece extends Piece{
 		this.color = color;
 	}
 
-	public Color getColor() {            //Apenas o get, pois não desejamos que a cor de uma peça seja modificada (set).
+	public Color getColor() {                                      //Apenas o get, pois não desejamos que a cor de uma peça seja modificada (set).
 		return color;
 	}
 	

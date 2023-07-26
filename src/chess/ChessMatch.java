@@ -1,5 +1,6 @@
 package chess;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,13 +24,13 @@ public class ChessMatch {
 	private boolean check;
 	private boolean checkMate;
 	private ChessPiece enPassantVulnerable;
+	private ChessPiece promoted;
 
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
 
-	public ChessMatch() { // Quando for criada a partida (ChessMatch), cria-se um tabuleiro 8x8 e
-							// inicia-se a partida.
-		board = new Board(8, 8); // Dimensão do tabuleiro.
+	public ChessMatch() {                // Quando for criada a partida (ChessMatch), cria-se um tabuleiro 8x8 e inicia-se a partida.
+		board = new Board(8, 8);         // Dimensão do tabuleiro.
 		turn = 1;
 		currentPlayer = Color.WHITE;
 		initialSetup();
@@ -54,9 +55,13 @@ public class ChessMatch {
 	public ChessPiece getEnPassantVulnerable() {
 		return enPassantVulnerable;
 	}
+	
+	public ChessPiece getPromoted() {
+		return promoted;
+	}
 
 	// MATRIZ DAS PEÇAS
-	public ChessPiece[][] getPieces() { // ChessPiece que vai ser manipulada, não Piece.
+	public ChessPiece[][] getPieces() {                                              // ChessPiece que vai ser manipulada, não Piece.
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
 		for (int i = 0; i < board.getRows(); i++) {
 			for (int j = 0; j < board.getColumns(); j++) {
@@ -87,6 +92,13 @@ public class ChessMatch {
 		}
 
 		ChessPiece movedPiece = (ChessPiece) board.piece(target);
+		
+		//MOVIMENTO ESPECIAL - PROMOÇÃO
+		promoted = null;
+		if (movedPiece.getColor() == Color.WHITE && target.getRow() == 0 || movedPiece.getColor() == Color.BLACK && target.getRow() == 7) {
+			promoted = (ChessPiece)board.piece(target);
+			promoted = replacePromotedPiece("Q");
+		}
 
 		check = (testCheck(opponent(currentPlayer))) ? true : false;
 
@@ -105,6 +117,34 @@ public class ChessMatch {
 		}
 
 		return (ChessPiece) capturedPiece;
+	}
+	
+	//MÉTODO PARA TROCAR DE PESSA NO MOVIMENTO ESPECIAL - PROMOÇÃO
+	public ChessPiece replacePromotedPiece(String type) {
+		if (promoted == null) {
+			throw new IllegalStateException("There is no piece to be promoted");
+		}
+		if (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) {
+			throw new InvalidParameterException("Invalid type for promotion");
+		}
+		
+		Position pos = promoted.getChessPosition().toPosition();
+		Piece p = board.removePiece(pos);
+		piecesOnTheBoard.remove(p);
+		
+		ChessPiece newPiece = newPiece(type, promoted.getColor());
+		board.placePiece(newPiece, pos);
+		piecesOnTheBoard.add(newPiece);
+		
+		return newPiece;
+	}
+	
+	//NOVA PEÇA PARA REPOSIÇÃO NO MOVIMENTO ESPECIAL - PROMOÇÃO
+	private ChessPiece newPiece(String type, Color color) {
+		if (type.equals("B")) return new Bishop(board, color);
+		if (type.equals("N")) return new Knight(board, color);
+		if (type.equals("Q")) return new Queen(board, color);
+		return new Rook(board, color);
 	}
 
 	// REALIZAR O MOVIMENTO DA PEÇA
@@ -143,7 +183,8 @@ public class ChessMatch {
 				Position pawnPosition;
 				if (p.getColor() == Color.WHITE) {
 					pawnPosition = new Position(target.getRow() + 1, target.getColumn());
-				} else {
+				} 
+				else {
 					pawnPosition = new Position(target.getRow() - 1, target.getColumn());
 				}
 				capturedPiece = board.removePiece(pawnPosition);
